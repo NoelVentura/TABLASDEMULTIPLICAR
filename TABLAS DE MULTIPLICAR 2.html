@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIENVENIDO NOELITO</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .game-container {
+            background: linear-gradient(135deg, #FFD3B5, #FFAAA5, #D5AAFF, #A3D8F4);
+            animation: bounceIn 1s ease-in-out;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .button {
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen text-center">
+    <div class="game-container p-8 rounded-2xl shadow-lg w-96 text-white">
+        <h1 class="text-3xl font-bold text-pink-600 mb-4">BIENVENIDO NOELITO</h1>
+        <p class="text-lg">Practica las tablas de multiplicar</p>
+        <div id="game" class="mt-4">
+            <p id="question" class="text-2xl font-bold text-purple-700"></p>
+            <input id="answer" type="number" class="mt-2 p-2 border rounded w-full text-center text-black" placeholder="Escribe tu respuesta">
+            <button onclick="checkAnswer()" class="button mt-3 bg-green-400 text-white px-4 py-2 rounded-lg">Verificar</button>
+            <p id="feedback" class="mt-2 text-lg font-bold"></p>
+        </div>
+        <div class="mt-4">
+            <p class="text-lg">Aciertos: <span id="score" class="text-green-700 font-bold">0</span></p>
+            <p class="text-lg">Errores: <span id="errors" class="text-red-700 font-bold">0</span></p>
+        </div>
+        <button onclick="restartGame()" class="button mt-3 bg-red-400 text-white px-4 py-2 rounded-lg">Reiniciar</button>
+    </div>
+
+    <script>
+        let num1, num2, correctAnswer;
+        let score = 0;
+        let errors = 0;
+
+        function generateQuestion() {
+            num1 = Math.floor(Math.random() * 9) + 1;
+            num2 = Math.floor(Math.random() * 9) + 1;
+            correctAnswer = num1 * num2;
+            document.getElementById('question').textContent = `${num1} × ${num2} = ?`;
+            document.getElementById('answer').value = '';
+            document.getElementById('feedback').textContent = '';
+        }
+
+        function checkAnswer() {
+            let userAnswer = parseInt(document.getElementById('answer').value);
+            let feedback = document.getElementById('feedback');
+
+            if (userAnswer === correctAnswer) {
+                feedback.textContent = "¡Bien hecho! 🎉";
+                feedback.className = "text-green-700 font-bold";
+                score++;
+            } else {
+                feedback.textContent = "¡Intenta de nuevo! ❌";
+                feedback.className = "text-red-700 font-bold";
+                errors++;
+            }
+
+            document.getElementById('score').textContent = score;
+            document.getElementById('errors').textContent = errors;
+            setTimeout(generateQuestion, 1000);
+        }
+
+        function restartGame() {
+            score = 0;
+            errors = 0;
+            document.getElementById('score').textContent = score;
+            document.getElementById('errors').textContent = errors;
+            generateQuestion();
+        }
+
+        generateQuestion();
+    </script>
+</body>
+</html>
